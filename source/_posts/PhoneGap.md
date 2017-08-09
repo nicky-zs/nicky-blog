@@ -8,6 +8,8 @@ tags:
 
 PhoneGap是手机平台上流行的一款中间件。它构建在各种手机平台所提供的WebView（浏览器内核）组件的基础之上，使用javascript语言对应用开发者提供统一的接口（如调用相机、调用其他本地组件），从而屏蔽了各手机平台上OS的异构。在无线小组的调研任务中，我的任务主要是负责iOS平台上的调研，本文简单描述了iOS平台上PhoneGap与平台本地的互操作性的实现。
 
+<!-- more -->
+
 PhoneGap因为被捐赠给了Apache而改名为Cordova，所以PhoneGap里的类名都以CDV作为前缀。在iOS平台上，最重要的一个核心类是`CDVViewController`。该类直接继承自`UIViewController`，因而具备了所有`UIViewController`所具备的特性。同时，该类还实现了两个Protocol（即接口）：`UIWebViewDelegate`和`CDVCommandDelegate`。因此它也负责UIWebView的一些callback，以及`CDVInvokedUrlCommand`的执行。
 
 `CDVViewController`类的主要对象成员是`CDVCordovaView *webView`，在源代码中可以看出，这个webView对象是`CDVViewController`的self.view上的唯一被add进来的子对象，即负责了整个`CDVViewController`类的显示。而`CDVCordovaView`类则没什么特别的，它直接继承自`UIWebView`。
