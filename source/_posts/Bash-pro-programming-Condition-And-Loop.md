@@ -23,6 +23,8 @@ fi
 if <condition list>; then <list>; fi
 ```
 
+<!-- more -->
+
 首先，`<condition list>`会被执行并得到退出码。退出码为0则认为是真，退出码不为0则认为是假。若为真，则执行`then`后面的`<list>`，否则直接退出。`if`语句也支持`else`或者`elif`:
 
 ```bash

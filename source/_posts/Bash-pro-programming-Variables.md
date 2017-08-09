@@ -23,6 +23,8 @@ ${var?message}   # 若 var 不存在则打印 message 信息并以状态码 1 �
 ${var:?message}  # 同上，但当 var 为空时，处理与不存在相同
 ```
 
+<!-- more -->
+
 在POSIX标准中，继承了一些来自Ksh的对于变量保存的**字符串的修剪操作**：
 
 ```bash
