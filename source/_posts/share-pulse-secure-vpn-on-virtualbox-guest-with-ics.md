@@ -31,3 +31,10 @@ echo 'nameserver 192.168.137.1' | sudo tee /etc/resolve.conf
 - 步骤2给Win7两块网卡是必须的。因为本地连接1被拿来共享VPN连接之后，它会获得一个静态且没有网关的IP，没有本地连接2整个Win7就无法访问外网，VPN也会失效。
 - 步骤4我原以为是一劳永逸的，后来发现每次在Win7上连接完VPN之后，都要重新把4中的设置取消了，然后再来一遍，不然就不生效。
 - 步骤5中的`dev wlp3s0`是网卡设备名，不同的系统上不一样。
+
+<hr>
+
+\# TODO     // 程序员最大谎言之一
+1. 除了ICS，还可以在Win7上安装socks代理，让Linux通过Win7暴露的socks代理来访问VPN。通过shadowsocks-redir的方式，然后Linux上配iptables来实现。
+2. 貌似有个叫redsocks的东西可以研究一下。
+3. 有空再记录下通过iptables把Linux主机变成NAT网关的方法。
