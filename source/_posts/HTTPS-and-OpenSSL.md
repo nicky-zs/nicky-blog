@@ -84,6 +84,52 @@ openssl rsautl -decrypt -in result.bin -inkey rsa_key -out origin.txt
 # 若使用私钥加密公钥解密，即数字签名，则 -encrypt 应换成 -sign，-decrypt 应换成 -verify 
 ```
 
+4、用openssl进行CA根证书的制作，以及用CA根证书签发SSL证书。
+
+```bash
+# 由于 openssl ca 命令的使用依赖于特定的目录结构，所以建议使用专门的目录来完成后续的操作
+mkdir -p nicky/CA/{newcerts,private} && cd nicky
+
+# 该目录结构的定义存在于 /etc/ssl/openssl.cnf 中，cp过来之后根据需要和实际条件修改一些条目，比如CA证书、私钥的路径和文件名;
+cp /etc/ssl/openssl.cnf .
+
+# 生成用于制作CA证书的RSA私钥
+openssl genrsa -out CA/ca.key 4096
+
+# 制作CA证书
+openssl req -new -x509 -key CA/private/ca.key -out CA/ca.crt -days 3650
+```
+
+**在生成SSL证书之前，需要修改openssl.cnf文件，主要为了加上Alternative DNS Names：**
+
+```bash
+...
+[ req ]
+...
+req_extensions = v3_req
+...
+[ v3_req ]
+basicConstraints = CA:FALSE
+keyUsage = nonRepudiation, digitalSignature, keyEncipherment
+subjectAltName = @alt_names
+...
+[ alt_names ]
+`DNS.1 = xxx.my-site.com`
+`DNS.2 = yyy.my-site.com`
+```
+
+接下来可以开始生成SSL证书：
+
+```bash
+# 生成SSL证书私钥
+openssl genrsa -out my-site.key 4096
+
+# 生成SSL证书申请文件
+openssl req -new -key my-site.key -out my-site.csr -config ./openssl.cnf -extensions v3_req
+
+# 签发SSL证书
+openssl ca -config ./openssl.cnf -in my-site.csr -out my-site.crt -extensions v3_req -days 365
+```
 <br>
 
 ##### 参考资料：
